@@ -1,0 +1,50 @@
+# Gizli bilgiler — asla GitHub'a yükleme
+secrets/
+*credentials*.md
+token.json
+.env
+
+# Batch çalışma çıktıları (her oturumda üretilir)
+products.json
+live_after.json
+raw/
+extract/
+final/
+candidates/
+push/
+dim/
+_base/
+kw.txt
+*_draft.json
+titles_final.json
+check_products.json
+rejects.json
+fit_rejects.json
+skip_reasons.json
+brief_flags.json
+image_ids.json
+image_map.json
+RULINGS.md
+rulings_omit.json
+para_feat_added.json
+extract_claims.json
+kf_review*.json
+cta_review*.json
+coverage.md
+kf-report.md
+MANIFEST.sha256
+work/
+__pycache__/
+*.pyc
+
+# Batch raporları — projeye yazılır, repoya değil
+backup-titles-*.md
+run-log-*.md
+category_map.json
+fact_cover_*.txt
+title-report.json
+
+# Per-batch working files (regenerated every run)
+DESC-BATCH-NOTE.md
+rewrites.json
+build_[0-9][0-9]_[0-9][0-9].py
