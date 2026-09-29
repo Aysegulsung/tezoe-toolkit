@@ -44,7 +44,11 @@ if __name__ == "__main__":
         nn = f"{n:02d}"; e = json.load(open(f"extract/p{nn}.json")); b = json.load(open(f"{bdir}/p{nn}.json"))
         bkf = {norm(x) for x in b.get("key_features") or []}; bsp = {norm(f"{s.get('name')}: {s.get('value')}") for s in b.get("specs") or []}
         ma = main_added.get(nn, {}); mkf = {norm(x) for x in ma.get("kf", [])}; msp = {norm(f"{s.get('name')}: {s.get('value')}") for s in ma.get("spec", [])}
-        akf = [x for x in e.get("key_features") or [] if norm(x) not in bkf and norm(x) not in mkf]
+        # CM-batch29: a source line re-written as "Name: same sentence" (or with its bold lead given a colon) is the SAME
+        # line, not a paragraph addition — compare letters/digits only and accept a baseline line that ends the agent line.
+        alnum = lambda s: re.sub(r"[^a-z0-9]", "", norm(s)); balnum = {alnum(x) for x in b.get("key_features") or []}
+        def same_as_base(x): a = alnum(x); return a in balnum or any(a.endswith(y) for y in balnum if len(y) > 15)
+        akf = [x for x in e.get("key_features") or [] if norm(x) not in bkf and norm(x) not in mkf and not same_as_base(x)]
         asp = [s for s in e.get("specs") or [] if norm(f"{s.get('name')}: {s.get('value')}") not in bsp and norm(f"{s.get('name')}: {s.get('value')}") not in msp]
         fk = fs = "-"
         if os.path.exists(f"final/d{nn}.json"):

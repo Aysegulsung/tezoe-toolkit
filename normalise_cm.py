@@ -8,7 +8,7 @@ import json, re, sys, glob, html
 def clean(s): return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", s or ""))).strip()
 HEAD = re.compile(r"<h([1-6])[^>]*>(.*?)</h\1>", re.S | re.I)
 SPEC = re.compile(r"specification|technical data|details|product data", re.I)
-PACK = re.compile(r"box|package|contain|included|scope of delivery|delivery includes", re.I)
+PACK = re.compile(r"box|package|contain|content|included|scope of delivery|delivery includes", re.I)   # CM-batch29 p32: "CONTENTS"
 WHY = re.compile(r"\bwhy\b|advantages|benefits|features|highlights", re.I)
 def blocks(h):
     hs = [(m.start(), m.end(), clean(m.group(2))) for m in HEAD.finditer(h)]
@@ -21,6 +21,15 @@ def lines(block):
     li = [x for x in li if x]
     if li: return li
     return [clean(x) for x in re.findall(r"<p[^>]*>(.*?)</p>", block, re.S | re.I) if clean(x) and not re.match(r"\s*<img", x)]
+def boldspec(raw):
+    """CM-batch29 p00/p02: "<strong>Material</strong> High-quality plastic." — no colon, the bold lead is the name."""
+    m = re.match(r"\s*<(strong|b)[^>]*>(.*?)</\1>(.*)", raw, re.S | re.I)
+    if not m: return None
+    n, v = clean(m.group(2)).rstrip(":").strip(), clean(m.group(3)).lstrip(":–—- ").strip().rstrip(".")
+    return {"name": n, "value": v} if n and v else None
+def rawlines(block):
+    li = [x for x in re.findall(r"<li[^>]*>(.*?)</li>", block, re.S | re.I) if clean(x)]
+    return li or [x for x in re.findall(r"<p[^>]*>(.*?)</p>", block, re.S | re.I) if clean(x) and not re.match(r"\s*<img", x)]
 def splitspec(t):
     m = re.match(r"([^:–—]{2,40}?)\s*(?::|\s[–—-]\s)\s*(.+)", t)
     return {"name": m.group(1).strip(), "value": m.group(2).strip().rstrip(".")} if m else None
@@ -30,10 +39,14 @@ for f in sorted(glob.glob("extract/p*.json")):
     if mode == "pre":
         h = json.load(open(f"raw/p{n}.json"))["descriptionHtml"] or ""
         specs, pack, kf = [], [], []
+        seen_spec = False
         for t, b in blocks(h):
-            if SPEC.search(t):
-                for x in lines(b):
-                    s = splitspec(x)
+            if SPEC.search(t) and seen_spec and not pack:
+                pack += [x for x in lines(b) if len(x) < 200]   # CM-batch29 p08: box list under a 2nd "SPECIFICATIONS" heading
+            elif SPEC.search(t):
+                seen_spec = True
+                for raw in rawlines(b):
+                    s = splitspec(clean(raw)) or boldspec(raw)
                     if s: specs.append(s)
             elif PACK.search(t):
                 pack += [x for x in lines(b) if len(x) < 200]

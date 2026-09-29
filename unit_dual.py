@@ -158,7 +158,21 @@ def _skip(item, m, liquid=False):
     if unit == "oz" and liquid: unit = "fl oz"      # a tank / capacity in oz is fluid ounces -> ml
     return False, unit
 
+DIM = r'\d+(?:[.,]\d+)?\s*[x×*]\s*\d+(?:[.,]\d+)?(?:\s*[x×*]\s*\d+(?:[.,]\d+)?)?'
+SIZE_LIST = re.compile(r'(?<![\w.])((?:' + DIM + r'\s*(?:,|\band\b|\bor\b)\s*)+)(' + DIM + r')\s*(mm|cm|m)\b(?!\w)', re.I)
+def expand_size_list(item):
+    """CM-batch29 p20/p24: "90 x 160, 90 x 180, 90 x 210 cm" shares ONE unit, so only the last size was converted and its
+    "(35.4 x 82.7 in)" read as the conversion of the whole list. Give every size its own unit first; each is then converted.
+    Idempotent: once every size carries the unit the pattern no longer matches."""
+    def rep(m):
+        unit = m.group(3)
+        parts = re.split(r'(\s*(?:,|\band\b|\bor\b)\s*)', m.group(1))
+        out = ''.join(p if (i % 2 or not p.strip()) else f"{p.strip()} {unit}" for i, p in enumerate(parts))
+        return f"{out}{m.group(2)} {unit}"
+    return SIZE_LIST.sub(rep, item)
+
 def dual(item):
+    item = expand_size_list(item)
     liquid = bool(LIQUID.search(item.split(":")[0] if ":" in item else item)) or bool(re.search(r'\d\s*(?:fl\.? ?)?oz\s+(?:water\s+)?(?:tank|reservoir|capacity|bottle)', item, re.I))   # 2026-09-07: "60 oz tank" in prose/FAQ is fluid ounces even when the item has a Name: prefix
     def rep(m):
         if adjacent_dual(item, m.start(), m.end()): return m.group(0)

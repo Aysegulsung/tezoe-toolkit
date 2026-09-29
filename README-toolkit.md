@@ -33,6 +33,8 @@ Drive folder keeps the old store's name; Worfa runs archive under `Worfa/<tag>/`
    Same file, `"q19_fit_block": true|false` from Q19 (rules/fit-block-rule.md; unanswered =
    false) and `"q18_dimension_image": true|false` from Q18 (rules/dimension-image-rule.md; unanswered = false). When true:
    `pip install rembg onnxruntime --break-system-packages` now, so step 7b does not wait for it. Same file, always:
+   `"cta_count": N` from Q11 (5 when the brief says "5 CTA benefits", default 3 — gate.py checks exactly N lines; 2026-09-29).
+   Same file, always:
    `"run_mode": "manual" | "scheduled"` from the brief's run-mode question (Q10) — since 2026-09-09 dim_image.py and
    dim_attach.py refuse to run without `"manual"` (a missing key reads as scheduled), so Q18 = Add in a scheduled brief is a
    documented no-op, not an error.
@@ -42,6 +44,15 @@ Drive folder keeps the old store's name; Worfa runs archive under `Worfa/<tag>/`
    2026-09-06, user decision — every one becomes an item of the new Key Features list, keyfeat_cover.py in gate.py enforces it); then per EXTRACT-SPEC.md a Sonnet agent per 10 products (not Haiku — batch12 and batch13: Haiku output unusable) fills identity, notes,
    safety_flags, season_hint, completes `key_features` and `specs` by eye (paragraph features and paragraph values — EXTRACT-SPEC.md, 2026-09-06) and candidates/cNN.json (40–70 per product, neighbouring families included so they are
    measured). Main model reads every `notes`, writes RULINGS.md, shows it in Manual mode.
+   **3a. CM supplier template (added 2026-09-29, CM-batch29; zero model tokens):** sources with a lead h1 + "WHY CHOOSE / WHY DO
+   PEOPLE LOVE …?" list + SPECIFICATIONS + WHAT'S IN THE BOX (h1–h6 headings, often "<strong>Name</strong> value" spec lines with no
+   colon) run the normaliser around the stock extraction, in this exact order:
+   `python3 extract_html.py products.json && python3 keyfeat_cover.py --extract && python3 normalise_cm.py pre && python3
+   normalise_cm.py snap && python3 usage_tips.py --extract && python3 sections.py --extract && python3 normalise_cm.py post`.
+   `pre` fills specs (bold lead = name when there is no colon), package (BOX / CONTENTS / a 2nd "SPECIFICATIONS" heading) and
+   key_features (WHY list); `snap` + `post` move the WHY lists sections.py takes as [UNMAPPED] into sections_dismissed and restore
+   key_features. Then write the normaliser's spec pairs for products whose `_base` spec list is empty into para_feat_added.json
+   (they count as main-context additions in extract_check.py / coverage.md, not as agent additions).
    **3b. Paragraph sweep (added 2026-09-07, STR-DUB-2-batch1, user decision; zero model tokens):** `python3 para_feat.py
    --report kf-report.md` prints every source-paragraph sentence with a feature marker that no `key_features` line covers
    ([KF MISSING?]) and every prose figure absent from `extract.specs` ([SPEC MISSING?]). The main context sorts each line —
@@ -219,6 +230,11 @@ Drive folder keeps the old store's name; Worfa runs archive under `Worfa/<tag>/`
    metafieldsSet ×2, fileUpdate alt batches; backup-alt-<tag>.md to /mnt/user-data/outputs/ and sent to the chat BEFORE the
    alt push (NOT a project doc since 2026-09-08 — see "Where run artefacts go"); then
    `for f in push/mut*.json push/cta*.json push/alt*.json; do python3 shopify_api.py mutate $f; done`.
+   **category_map.json (2026-09-29):** build_payloads.py reads the taxonomy leaf per product from `category_map.json`
+   (`{"NN": ["<gid suffix>", "<exact leaf name>"]}`), written by the main context from a LIVE lookup
+   (`taxonomy { categories(search: "<proposal>") { nodes { id name fullName } } }`) — never parsed from `category_proposal`.
+   Before the alt push also check that no alt (media alts + description <img> alts) repeats across the batch — verify.py
+   FAILs a batch repeat.
    **Image layout (added 2026-09-26, rules/description-image-layout-rule.md, user decision):** after dim_keep and BEFORE the
    payloads run `python3 spread.py final` (zero model tokens) — it rewrites final/dNN.json so no two description images sit
    back to back: extras go one per section break (never next to another image, never before the FAQs), leftovers into one
