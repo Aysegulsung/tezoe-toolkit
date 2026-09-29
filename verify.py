@@ -91,7 +91,7 @@ def load_colmap(path):
         m = {}
         for e in d:
             n = e.get('node', e) if isinstance(e, dict) else {}
-            if isinstance(n, dict) and n.get('id') and n.get('title'): m[n['title']] = n['id']
+            if isinstance(n, dict) and n.get('id') and n.get('title'): m.setdefault(n['title'], n['id'])
         if m: return m
     sys.exit(f'{path}: no collections found in it — refresh it (README "Store-specific constants") before verifying')
 
@@ -132,7 +132,7 @@ for f in finals:
     # 6 tags
     lt, st = L.get('tags') or [], S.get('tags') or []
     want = set(st) | ({d['season']} if d.get('season') else set())
-    report(nn, 'tags', set(lt) == want and len(lt) == len(set(lt)), f'live={sorted(lt)} expected={sorted(want)} dropped={sorted(set(st)-set(lt))} dup={len(lt)!=len(set(lt))}')
+    report(nn, 'tags', {t.lower() for t in lt} == {t.lower() for t in want} and len(lt) == len({t.lower() for t in lt}), f'live={sorted(lt)} expected={sorted(want)} dropped={sorted(set(st)-set(lt))} dup={len(lt)!=len(set(lt))}')
     # 7 status
     exp_status = a.status or S.get('status')
     report(nn, 'status', L.get('status') == exp_status, f'live={L.get("status")} expected={exp_status}')

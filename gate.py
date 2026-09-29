@@ -37,7 +37,8 @@ for n in ids:
     miss=[s for s in ex['specs'] if re.sub(r'\s+',' ',str(s['value']).lower())[:25] not in re.sub(r'\s+',' ',txt) and not any(w in txt for w in re.findall(r'\d+(?:\.\d+)?',str(s['value']))[:1])]
     if miss: print(f"[WARN] {n:02d} spec values possibly missing: {[m['name'] for m in miss][:6]}")
     cta=d.get('cta_benefits',[])
-    if len(cta)!=3 or any('|' not in c or len(c.split('|')[1])>30 for c in cta): print(f"[FAIL] {n:02d} cta_benefits must be 3 x 'icon|text<=30ch': {cta}"); bad+=1
+    _cc=json.load(open('brief_flags.json')).get('cta_count',3) if os.path.exists('brief_flags.json') else 3
+    if len(cta)!=_cc or any('|' not in c or len(c.split('|')[1])>30 for c in cta): print(f"[FAIL] {n:02d} cta_benefits must be {_cc} x 'icon|text<=30ch': {cta}"); bad+=1
     for a in d.get('media_alts',[]):
         if len(a['alt'])>125 or not a['alt']: print(f"[FAIL] {n:02d} media alt empty/over 125"); bad+=1
     alts=[a['alt'] for a in d.get('media_alts',[])]+re.findall(r'alt="([^"]*)"',d['descriptionHtml'])

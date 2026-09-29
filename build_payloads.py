@@ -66,7 +66,7 @@ def main():
         pid = d["product_id"]
         s = snap[pid]
         tags = list(dict.fromkeys((s.get("tags") or []) + [d["season"]]))
-        cat_key, cat_name = TAX[CAT[nn]]
+        cat_key, cat_name = json.load(open("category_map.json"))[nn]   # CM batches: live taxonomy lookup
         if d.get("category_proposal") != cat_name:      # keep verify.py check 8 honest
             d["category_proposal"] = cat_name
             json.dump(d, open(f, "w"), indent=1, ensure_ascii=False)

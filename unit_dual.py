@@ -146,6 +146,7 @@ def _skip(item, m, liquid=False):
     # 2026-09-28 (Tezoe UK — metric_only now converts "in" inside the H2 / bullets too): "3 in stock", "2 in the box", "5 in total"
     # is the preposition, not inches (same word list as dim_image.NOT_IN).
     if m.group("unit").strip().lower() == "in" and NOT_IN.match(item[m.end():]): return True, None
+    if m.group("unit") == "M" and re.fullmatch(r"\s*3\s*", m.group(1) or ""): return True, None   # CM-batch25: "3M" is the brand, not 3 metres
     unit = m.group("unit").lower().replace(".", "").replace(" ", "")
     unit = WORD_UNITS.get(unit, unit)
     # 2026-09-12 (DDL2-Batch3 p17): "12V gasoline engines up to 10.0 L" is engine DISPLACEMENT, written in litres in the US too —

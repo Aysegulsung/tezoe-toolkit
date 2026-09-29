@@ -1,6 +1,6 @@
 # toolkit MANIFEST — sha256 of every toolkit/rule doc as it should land on disk (refreshed 2026-09-07b, Tuzwa→Vepine store migration: 18 files re-hashed — CDN prefix, BRAND, comparison-table colours/heading and the tz-→vp- CSS hooks; desc-check.py re-hashed too — its line was already stale before the migration and the file was verified complete and compiling before rehashing)
 
-Last refresh: 2026-09-28 — STORE CHANGE Worfa → Tezoe, whole block recomputed (see the 2026-09-28 refresh note), on top of 2026-09-15 unit_dual.py recomputed (word-form units, bag litres, count × value, axis label; see the last refresh note), on top of 2026-09-11 (later still) — list_bold.py added as a 57th line (bold Key Features / Specifications lead-ins, gap under image 2; gate.py, struct-check.py, rules/description-format-rule.md recomputed), after the same day's US units only in the budgeted elements (6 lines recomputed: unit_dual.py, compare_build.py, fit_build.py, rules/comparison-table-rule.md, rules/fit-block-rule.md, rules/description-format-rule.md), on top of the same day's kw_measure.py word-order guard (3 lines recomputed, a 56th line added: rules/kw-order-variant-rule.md),
+Last refresh: 2026-09-29 — CM-batch26: gate.py (cta_count from brief_flags.json), build_payloads.py (category_map.json), verify.py (tags case-insensitive, duplicate collection titles first-wins), unit_dual.py (3M brand skip), DESC-SPEC.md (Tezoe CDN prefix), normalise_cm.py added (CM template normaliser); on top of 2026-09-28 — STORE CHANGE Worfa → Tezoe, whole block recomputed (see the 2026-09-28 refresh note), on top of 2026-09-15 unit_dual.py recomputed (word-form units, bag litres, count × value, axis label; see the last refresh note), on top of 2026-09-11 (later still) — list_bold.py added as a 57th line (bold Key Features / Specifications lead-ins, gap under image 2; gate.py, struct-check.py, rules/description-format-rule.md recomputed), after the same day's US units only in the budgeted elements (6 lines recomputed: unit_dual.py, compare_build.py, fit_build.py, rules/comparison-table-rule.md, rules/fit-block-rule.md, rules/description-format-rule.md), on top of the same day's kw_measure.py word-order guard (3 lines recomputed, a 56th line added: rules/kw-order-variant-rule.md),
 on top of the 2026-09-10 Worfa go-live checks (7 lines: theme colours, store row, verified credentials),
 after the same day's store change Vepine → Worfa (17 lines: BRAND, CDN prefix, host, rule docs, credentials),
 on top of the same day's comparison-table mobile/desktop width fix and the rotated Shopify credential pair.
@@ -1145,7 +1145,7 @@ sections rewritten for the clone route, README step 0 now writes both credential
 
 
 ```
-ef73bcbf78baf12aad516b2042a40cc63a23033bcf8ac5bbe8a67f5650f23e24  ./DESC-SPEC.md
+6e36cdf2eceaef90f7b31ad30cf75e0a09adef653d41f276e904429840544900  ./DESC-SPEC.md
 280607e85b67d6d4cc89d2f56ff1468f546ca5d9b2a39f8026e39d64cd65ca0d  ./EXTRACT-SPEC.md
 887ba5c59c4228f224ec6c86fb68732da9ecdc30bd537445f22be12416e8ea35  ./README-toolkit.md
 9fefaf0e8e6df0c5152d95672fa161857eefed6bdd55c1e977a978a76f304fdb  ./TITLE-SPEC.md
@@ -1159,7 +1159,7 @@ b0757ad4fb2b1dd0ca20d03c64aeff9dc878467fe2397235c1f385fef76794bc  ./cta_check.py
 b118dc60532f867439efbc078ac906dbbfda644583f3aa100befab4d1a3ad317  ./extract_html.py
 f869bd34e0e4fc64dcb9a92945814d41fd26eb59fbfebb31df51ceb258ab9f4b  ./fact_cover.py
 cde1242bc9ef0068eab3e0dc6eb3448da487a390c8ef85c75000c438408f3746  ./factcheck_prompt.md
-684287ef26effd5ca78151fccb50b4c824231c9147e302c0b68355e0dbc2811c  ./gate.py
+4dd33c41642f8157bc78d897c4b60ac1d395902675926d84819666c9ecb0d3fa  ./gate.py
 b172ebe12906d7f84182c11605cec312000d2847718cf93c40cc58a7e622fdba  ./head_check.py
 2e2e2eb2493ba4ab84ab958e7681d5b278a00ca35da3a6abe594a15d41d076ff  ./novel_words.py
 e707095eb797499bba92ca2c7dfe4874f772ea6217bf9cb82b1c2af10cf5a23b  ./ov.py
@@ -1178,7 +1178,7 @@ b3c841c7ad513400ad71311935a3c8d2c65d901caefaea7da65a1e91cb7c1931  ./shopify_api.
 4b18033b4652390bc8158aa636878f0ec5940a7392854ace0a1712ba93e59344  ./title-check.py
 daa5a5569314a46cd6893b57e75409ac344700d33729d8c4c2cb264e2804ac16  ./usage-efficiency-runbook.md
 420431d7b50507a524c1140eb0bcdd7ad6e04c6290246d99a0b5dd767db12205  ./value_check.py
-9c72dd302ebfa089f303ccc97184501cb933d1d3209933dffe5b6ef934c044d1  ./verify.py
+0218c9810e40e32ab4848ef1cc3bd0b5d9fbd69d1b4d0a6157b9dbd9f8ac4f9c  ./verify.py
 cc3eb76be50368dd7309c11ecf7397ba7c28e406c26c71f8b484588b9c6ad4aa  ./rehost.py
 64204063ef248cb55cf67a53b0fcaf3321947962c8550452e075d13e7808afc4  ./compare_build.py
 33b8474d720f7967de0e899893789ed0bba9c0ff1db14f2ef610859fafba27ce  ./rules/comparison-table-rule.md
@@ -1190,7 +1190,7 @@ cc3eb76be50368dd7309c11ecf7397ba7c28e406c26c71f8b484588b9c6ad4aa  ./rehost.py
 6ad7803d930d50538a84d18d3df1d28d56101c976f2111165a31d68780f79c9b  ./rules/fit-block-rule.md
 1d5a90d740c28cd881d617ce9b89a0a5b3efbc6d7e9525389c50ef433ddc5b7d  ./CTA-REVIEW-SPEC.md
 e15cebe0fde55247966cb6eab106660a3c0c44a0eb6db2f40151b6e9bde079d8  ./keyfeat_cover.py
-5b6128e4d5800bce445b6ad785cfda945017ac892b568f27b3c260bedcf9fb32  ./unit_dual.py
+a7b306d3d560c8e315c2b2d7f30ea833478b8889695cafdffe8e81c97fd4455f  ./unit_dual.py
 e08c21d0b6fe0951e3c929318b2e2d7a757a4ed724d48bcc6369fb1fd047baff  ./para_feat.py
 87b17ae7b1e631dee6996441a52bfa46a66cc7961fe9f7a35777ebd18f1af356  ./extract_check.py
 e4c4050841aeea9b3b8180386f3bdc2eef070b8936c6a240d766bcd58bd08875  ./KF-REVIEW-SPEC.md
@@ -1204,7 +1204,8 @@ ecf9731e745ef965f65733a7c7cf530046dc25bea32681c40c6bc05a87e67ea2  ./rules/kw-ord
 7c86386a6f77ab101bd60957e78df39449751dce01cf61c7f0eb6da2ffad4d74  ./list_bold.py
 b3b64dd58e7faff215653dd17d1d7cd74d1ccd9e4ae76c2580c273a5273fbb51  ./fix_sections.py
 3b8daef9a896547894840edc1503d009e2f553fc9eebae2140f14ee1d01003f9  ./spec_parse.py
-04e63e8a9ca67940181e0d2d5dd5440cf78f2e29cea5fdd6aa2e68a10c2f9591  ./build_payloads.py
+c764be4b770640f37ca52694f7badc893d8a7499e2d9f8deeaa78dd263ec985a  ./build_payloads.py
 e1a23bcabc124e327d07c0d3d6441e416c0dbdba53cf08d2b93600e36a6a4957  ./spread.py
 55e1c514315857a0b72eed43a09e2b42233996e2d2aeb4892cb3d439f4e066bf  ./rules/description-image-layout-rule.md
+f6a30feb43e76f614cf6a9ad95a329b183c6ea70a6a98a80aec5f9d4590d5a41  ./normalise_cm.py
 ```
